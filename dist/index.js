@@ -8,7 +8,7 @@ const ALLOWED_ASCII = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345
     .split("")
     .map((c) => c.charCodeAt(0));
 async function readFile(name) {
-    const res = await fetch(`/${name}.3df`);
+    const res = await fetch(`${location.pathname}${name}.3df`);
     const data = await res.blob();
     const buffer = await data.arrayBuffer();
     return new Uint8ClampedArray(buffer);
@@ -120,20 +120,14 @@ function parseImage(preamble, imageSlice, name) {
                 if (iin === 0) {
                     const A = el >> 4;
                     const R = el & 0b00001111;
-                    // ui8Result[2 * idx + 3] = A * 100;
-                    // ui8Result[2 * idx] = R * 100;
                     ui8Result[2 * idx + 3] = A << 4;
                     ui8Result[2 * idx] = R << 4;
-                    // console.log(2 * idx + 3, 2 * idx);
                 }
                 else {
                     const G = el >> 4;
                     const B = el & 0b00001111;
-                    // ui8Result[2 * idx - 1] = G * 100;
-                    // ui8Result[2 * idx] = B * 100;
                     ui8Result[2 * idx - 1] = G << 4;
                     ui8Result[2 * idx] = B << 4;
-                    // console.log(2 * idx - 1, 2 * idx);
                 }
             });
             return ui8Result;
@@ -235,7 +229,6 @@ function parseImage(preamble, imageSlice, name) {
             }
             const palette = new Uint8ClampedArray(256 * 4);
             const get = (array, i) => {
-                console.log(i, (i / 3) | 0);
                 return array[(i / 3) | 0][i % 3 | 0];
             };
             for (let i = 0; i < 256; ++i) {
@@ -248,7 +241,6 @@ function parseImage(preamble, imageSlice, name) {
                 r = Math.min(255, Math.max(0, r));
                 g = Math.min(255, Math.max(0, g));
                 b = Math.min(255, Math.max(0, b));
-                console.log({ b });
                 palette[4 * i + 0] = r;
                 palette[4 * i + 1] = g;
                 palette[4 * i + 2] = b;
