@@ -370,6 +370,29 @@ async function printFile(name: string) {
       continue;
     }
 
+    const container = document.createElement("div");
+    {
+      const meta = document.createElement("pre");
+      const {
+        COLOR,
+        width,
+        height,
+        aspect_ratio: { aspect_ratio },
+      } = preamble;
+      meta.innerText = JSON.stringify(
+        {
+          name: name.replace("examples/", ""),
+          COLOR: GrTextureFormat_t[COLOR],
+          width,
+          height,
+          aspect_ratio: { aspect_ratio },
+        },
+        null,
+        2
+      );
+      container.appendChild(meta);
+    }
+
     const canvas = document.createElement("canvas");
     canvas.title = name;
     canvas.width = width;
@@ -380,52 +403,54 @@ async function printFile(name: string) {
     imgData.data.set(data);
     ctx.putImageData(imgData, 0, 0);
 
-    document.body.appendChild(canvas);
+    container.appendChild(canvas);
+    document.body.appendChild(container);
+    break;
   }
 }
 
 export async function init() {
   [
-    "3d_menu",
-    "3d_menu_1",
-    "3d_menu_1_1",
-    "3d_menu_2_pl",
-    "3d_menu_glow",
-    "3d_menu_glowg",
-    "3d_menug",
-    "3d_menug_1",
-    "3d_menug_1_1",
-    "3d_menug_2_pl",
-    "babcia",
-    "bacon",
-    "bagnetrt",
-    "bal",
-    "barierka",
-    "beczka",
-    "beczka2",
-    "beczka3a",
-    "beczka3b",
-    "bejsbolrt.1",
-    "black_circle",
-    "blank",
-    "dym_black0003",
-    "dym_black0004",
-    "dym_black0005",
-    "dym_black0006",
-    "dym_black0007",
-    "dym_black0008",
-    "dym_black0009",
-    "dym_black0010",
-    "dym_black0011",
-    "dym_black0012",
-    "dym_black0013",
-    "dym_black0014",
-    "dym_black0015",
-    "example",
-    "kk.1",
-    "kk.2",
-    "kk.3",
-    "kk.4",
-    "odlamek14",
+    "examples/3d_menu",
+    "examples/3d_menu_1",
+    "examples/3d_menu_1_1",
+    "examples/3d_menu_2_pl",
+    "examples/3d_menu_glow",
+    "examples/3d_menu_glowg",
+    "examples/3d_menug",
+    "examples/3d_menug_1",
+    "examples/3d_menug_1_1",
+    "examples/3d_menug_2_pl",
+    "examples/babcia",
+    "examples/bacon",
+    "examples/bagnetrt",
+    "examples/bal",
+    "examples/barierka",
+    "examples/beczka",
+    "examples/beczka2",
+    "examples/beczka3a",
+    "examples/beczka3b",
+    "examples/bejsbolrt.1",
+    "examples/black_circle",
+    "examples/blank",
+    "examples/dym_black0003",
+    "examples/dym_black0004",
+    "examples/dym_black0005",
+    "examples/dym_black0006",
+    "examples/dym_black0007",
+    "examples/dym_black0008",
+    "examples/dym_black0009",
+    "examples/dym_black0010",
+    "examples/dym_black0011",
+    "examples/dym_black0012",
+    "examples/dym_black0013",
+    "examples/dym_black0014",
+    "examples/dym_black0015",
+    "examples/example",
+    "examples/kk.1",
+    "examples/kk.2",
+    "examples/kk.3",
+    "examples/kk.4",
+    "examples/odlamek14",
   ].reduce((acc, name) => acc.then(() => printFile(name)), Promise.resolve());
 }
